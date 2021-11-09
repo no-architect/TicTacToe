@@ -1,5 +1,15 @@
 package tictactoe
 
+fun winsX( str: String): Boolean {
+
+    if (Regex("(XXX.{6})|(...XXX...)|(.{6}XXX)").containsMatchIn(str) ||
+        Regex("X..X..X").containsMatchIn(str) ||
+        Regex("(X...X...X)|(..X.X.X..)").containsMatchIn(str)) {
+        return true
+    }
+    return false
+}
+
 fun main() {
     // write your code here
     val curState = readLine()!!
@@ -13,4 +23,5 @@ fun main() {
         }
         println("|\n---------")
     } else println("no correct")
+    val res = Regex("(XXX)|(OOO)").containsMatchIn(curState)
 }
