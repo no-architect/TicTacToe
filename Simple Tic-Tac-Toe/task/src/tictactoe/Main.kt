@@ -35,8 +35,11 @@ fun resStr( str: String): String {
     return "Game not finished"
 }
 
-// function print Cell if format
-fun printCell(str: String) {
+val pr = "| X X X |"
+
+// function print Cell in format
+fun printCell(str1: String) {
+    val str = str1.replace("_", " ")
     if (str.length == 9) {
         print("---------\n| ")
         for (cur in 0..str.lastIndex){
@@ -69,26 +72,38 @@ fun canBeChangedCell(cells: String, xy: String): Boolean {
 //function return cells after changed
 fun changeCell(cells: String, cell: String): String {
     val inCell = cell.replace(" ", "")
-    println("proverka")
     if (canBeChangedCell(cells, inCell)) {
-        println("proverka pass")
         return cells.replaceRange(convertCoordinatToIndex(inCell), convertCoordinatToIndex(inCell) + 1, "X")
     }
     return cells
 }
 
-fun main() {
-    print("Enter cells:")
-    val curState = readLine()!!
+fun changeCellXO(cells: String, cell: String, xnoty: Boolean): String {
+    val inCell = cell.replace(" ", "")
+    if (canBeChangedCell(cells, inCell)) {
+        return cells.replaceRange(convertCoordinatToIndex(inCell), convertCoordinatToIndex(inCell) + 1, if (xnoty) "X" else "O")
+    }
+    return cells
+}
 
+fun main() {
+//    print("Enter cells:")
+    var curState = "_________"
+    var symbolXnotO = true
     printCell(curState)
     print("Enter the coordinates:")
     var curCell = readLine()!!
-    while (!canBeChangedCell(curState, curCell)) {
-        print("Enter the coordinates:")
-        curCell = readLine()!!
+
+    while (resStr(curState) == "Game not finished") {
+        while (!canBeChangedCell(curState, curCell)) {
+            print("Enter the coordinates:")
+            curCell = readLine()!!
+        }
+        curState = changeCellXO(curState, curCell, symbolXnotO)
+        symbolXnotO = !symbolXnotO
+        printCell(curState)
     }
-    println(changeCell(curState, curCell))
-    printCell(changeCell(curState, curCell))
+
+    println(resStr(curState))
 
 }
