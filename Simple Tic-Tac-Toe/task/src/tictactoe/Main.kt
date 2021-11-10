@@ -1,5 +1,7 @@
 package tictactoe
 
+import java.lang.Math.abs
+
 fun winsX( str: String): Boolean {
 
     if (Regex("(XXX.{6})|(...XXX...)|(.{6}XXX)").containsMatchIn(str) ||
@@ -8,6 +10,26 @@ fun winsX( str: String): Boolean {
         return true
     }
     return false
+}
+fun winsO( str: String): Boolean {
+
+    if (Regex("(OOO.{6})|(...OOO...)|(.{6}OOO)").containsMatchIn(str) ||
+        Regex("O..O..O").containsMatchIn(str) ||
+        Regex("(O...O...O)|(..O.O.O..)").containsMatchIn(str)) {
+        return true
+    }
+    return false
+}
+fun resStr( str: String): String {
+    val countX = Regex("X").findAll(str).count()
+    val countO = Regex("O").findAll(str).count()
+    val countE = Regex("_").findAll(str).count()
+    if (abs(countX - countO) > 1) { return "Impossible " }
+    if (winsO(str) && winsX(str)) { return "Impossible" }
+    if (winsX(str)) { return "X wins" }
+    if (winsO(str)) { return "O wins" }
+    if (countE == 0) { return "Draw" }
+    return "Game not finished"
 }
 
 fun main() {
@@ -23,5 +45,5 @@ fun main() {
         }
         println("|\n---------")
     } else println("no correct")
-    val res = Regex("(XXX)|(OOO)").containsMatchIn(curState)
+    println(resStr(curState))
 }
